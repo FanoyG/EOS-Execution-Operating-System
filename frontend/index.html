@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EOS — Execution Operating System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">EOS<span>Execution Operating System</span></div>
+
+  <div class="sidebar-profile">
+    <div class="avatar" id="userAvatar">FN</div>
+    <div class="avatar-info">
+      <p id="userName">Fanoy</p>
+      <small id="userEmail">your@email.com</small>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-label">Core</div>
+    <div class="nav-item active" data-page="dashboard">
+      <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" data-page="locker">
+      <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Task Locker
+      <div class="notif-dot" id="lockerDot" style="display:none"></div>
+    </div>
+    <div class="nav-item" data-page="execution">
+      <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>
+      Execution Mode
+    </div>
+    <div class="nav-item" data-page="review">
+      <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l5 5v11a2 2 0 0 1-2 2z"/></svg>
+      Review & Gaps
+    </div>
+
+    <div class="nav-label">Growth</div>
+    <div class="nav-item" data-page="insights">
+      <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Insights
+    </div>
+
+    <div class="nav-label">System</div>
+    <div class="nav-item" data-page="settings">
+      <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </div>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="nav-item" onclick="logout()">
+      <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Dashboard</div>
+    <div class="topbar-right">
+      <div class="date-pill"><strong id="dayName">Mon</strong> &nbsp;<span id="todayDate">--</span></div>
+      <div class="icon-btn" onclick="navigateTo('locker')" title="Task Locker">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <div class="icon-btn" onclick="navigateTo('execution')" title="Start Execution">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ====== DASHBOARD ====== -->
+    <div class="page active" id="page-dashboard">
+      <div class="welcome-bar">
+        <div class="welcome-text">
+          <h1 id="greetingText">Good morning, Fanoy 👋</h1>
+          <p id="greetingSub">Here's your mission for today.</p>
+        </div>
+        <button class="start-btn" onclick="startExecution()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>
+          Start Execution
+        </button>
+      </div>
+
+      <div class="grid-main">
+        <!-- LEFT COL -->
+        <div>
+          <!-- Mission Card -->
+          <div class="mission-card" id="missionCard">
+            <div class="mission-label">Today's First Mission</div>
+            <div class="mission-title" id="missionTitle">No task locked yet</div>
+            <div class="mission-outcome" id="missionOutcome">Head to Task Locker to plan your day first.</div>
+            <a class="mission-resource" href="#" id="missionResource" onclick="navigateTo('locker'); return false;">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <span id="missionResourceText">Go to Task Locker</span>
+            </a>
+          </div>
+
+          <!-- Active Tasks -->
+          <div class="card section-gap">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Today's Tasks
+            </div>
+            <div id="dashboardTasks">
+              <p style="color: var(--text-muted); font-size: 14px; padding: 8px 0;">Lock tasks in Task Locker to see them here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COL -->
+        <div>
+          <!-- Cycle Tracker -->
+          <div class="card section-gap">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Cycle Tracker
+            </div>
+            <div id="cycleBlocks">
+              <!-- populated by JS -->
+            </div>
+            <div style="margin-top: 14px; display: flex; gap: 10px;">
+              <div class="stat-card" style="flex:1; padding: 12px 14px;">
+                <div class="stat-label">Done</div>
+                <div class="stat-num" id="cyclesDoneNum" style="font-size:22px;">0</div>
+              </div>
+              <div class="stat-card" style="flex:1; padding: 12px 14px;">
+                <div class="stat-label">Remaining</div>
+                <div class="stat-num" id="cyclesRemNum" style="font-size:22px;">3</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Task Status Donut -->
+          <div class="card section-gap">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+              Task Status
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center; padding: 8px 0;">
+              <div class="donut-wrap">
+                <svg width="70" height="70" viewBox="0 0 70 70">
+                  <circle cx="35" cy="35" r="25" fill="none" stroke="#EBEBEB" stroke-width="10"/>
+                  <circle id="donutCompleted" cx="35" cy="35" r="25" fill="none" stroke="#E85D4A" stroke-width="10" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157" transform="rotate(-90 35 35)" style="transition: stroke-dashoffset 0.8s ease;"/>
+                  <text x="35" y="39" text-anchor="middle" font-family="Syne,sans-serif" font-size="12" font-weight="700" fill="#1A1A1A" id="donutCompPct">0%</text>
+                </svg>
+                <div class="donut-label" style="color: var(--red);">Completed</div>
+              </div>
+              <div class="donut-wrap">
+                <svg width="70" height="70" viewBox="0 0 70 70">
+                  <circle cx="35" cy="35" r="25" fill="none" stroke="#EBEBEB" stroke-width="10"/>
+                  <circle id="donutInProgress" cx="35" cy="35" r="25" fill="none" stroke="#4F83E6" stroke-width="10" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157" transform="rotate(-90 35 35)" style="transition: stroke-dashoffset 0.8s ease;"/>
+                  <text x="35" y="39" text-anchor="middle" font-family="Syne,sans-serif" font-size="12" font-weight="700" fill="#1A1A1A" id="donutInPct">0%</text>
+                </svg>
+                <div class="donut-label" style="color: var(--blue);">In Progress</div>
+              </div>
+              <div class="donut-wrap">
+                <svg width="70" height="70" viewBox="0 0 70 70">
+                  <circle cx="35" cy="35" r="25" fill="none" stroke="#EBEBEB" stroke-width="10"/>
+                  <circle id="donutNotStarted" cx="35" cy="35" r="25" fill="none" stroke="#BBBBBB" stroke-width="10" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="39" transform="rotate(-90 35 35)" style="transition: stroke-dashoffset 0.8s ease;"/>
+                  <text x="35" y="39" text-anchor="middle" font-family="Syne,sans-serif" font-size="12" font-weight="700" fill="#1A1A1A" id="donutNotPct">100%</text>
+                </svg>
+                <div class="donut-label" style="color: var(--text-muted);">Not Started</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Streak -->
+          <div class="card">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Execution Streak
+            </div>
+            <div style="font-size: 22px; font-family: 'Syne', sans-serif; font-weight: 700;" id="streakCount">0 days</div>
+            <div class="streak-dots" id="streakDots"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== TASK LOCKER ====== -->
+    <div class="page" id="page-locker">
+      <div class="welcome-bar">
+        <div class="welcome-text">
+          <h1>Task Locker 🔒</h1>
+          <p>Plan once. Lock it. Execute tomorrow.</p>
+        </div>
+        <div id="lockStatusBadge" class="lock-badge unlocked">Unlocked</div>
+      </div>
+
+      <div id="lockerWarning" class="locked-banner" style="display:none;">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Tasks are locked. No editing until tomorrow morning.
+      </div>
+
+      <div class="grid-2">
+        <!-- Add Task Form -->
+        <div>
+          <div class="card" id="addTaskForm">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Task
+            </div>
+            <div class="form-group">
+              <label class="form-label">Task Name</label>
+              <input class="form-input" id="taskNameInput" placeholder="e.g. Build FastAPI CRUD" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Outcome</label>
+              <input class="form-input" id="taskOutcomeInput" placeholder="e.g. Create GET, POST, PUT, DELETE API" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Resource Link (optional)</label>
+              <input class="form-input" id="taskResourceInput" placeholder="https://youtube.com/..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select class="form-select form-input" id="taskPriorityInput">
+                <option value="high">High Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="low">Low Priority</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-full" id="addTaskBtn">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add to Locker
+            </button>
+          </div>
+
+          <!-- Lock Section -->
+          <div class="card mt-20">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Lock for Tomorrow
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6;">Once locked, tasks cannot be changed until you complete tomorrow's execution. This prevents overthinking.</p>
+            <button class="btn btn-primary btn-full" id="lockBtn">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Lock Tasks for Tomorrow
+            </button>
+            <button class="btn btn-ghost btn-full mt-16" id="unlockBtn" style="display:none;">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 4-4v0"/></svg>
+              Unlock & Reset Day
+            </button>
+          </div>
+        </div>
+
+        <!-- Task List -->
+        <div>
+          <div class="card">
+            <div class="card-title flex-between" style="margin-bottom: 14px;">
+              <span style="display:flex;align-items:center;gap:8px;">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Task Queue
+              </span>
+              <span style="font-size: 12px; font-weight: 600; color: var(--text-muted);" id="taskCount">0 tasks</span>
+            </div>
+            <div id="lockerTaskList">
+              <p style="color: var(--text-muted); font-size: 14px; padding: 16px 0; text-align: center;">No tasks yet. Add your first task →</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== EXECUTION MODE ====== -->
+    <div class="page" id="page-execution">
+      <div class="exec-wrap">
+        <div class="welcome-bar" style="margin-bottom: 20px;">
+          <div class="welcome-text">
+            <h1>Execution Mode ⚡</h1>
+            <p>Focus. Execute. No distractions.</p>
+          </div>
+          <div id="execStatusTag" class="tag tag-amber" style="font-size:13px; padding: 6px 14px;">No Task Active</div>
+        </div>
+
+        <!-- No task state -->
+        <div id="noTaskState" class="card" style="text-align:center; padding: 40px;">
+          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#BBBBBB" stroke-width="1.5" style="margin: 0 auto 16px;"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <p style="font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 8px;">No tasks locked yet</p>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Head to Task Locker, add your tasks and lock them.</p>
+          <button class="btn btn-primary" onclick="navigateTo('locker')">Go to Task Locker</button>
+        </div>
+
+        <!-- Active execution -->
+        <div id="execActiveState" style="display:none;">
+          <div class="timer-display">
+            <div class="timer-task-label">Current Task</div>
+            <div class="timer-task-name" id="execTaskName">—</div>
+            <div class="timer-time" id="timerDisplay">45:00</div>
+            <div class="timer-block-label" id="timerBlockLabel">Block 1 — Learn</div>
+            <div class="timer-progress"><div class="timer-progress-fill" id="timerFill" style="width:0%"></div></div>
+          </div>
+
+          <!-- Block selector -->
+          <div class="card section-gap">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Execution Blocks
+            </div>
+            <div id="execBlocks"></div>
+          </div>
+
+          <!-- Timer controls -->
+          <div class="card section-gap">
+            <div class="btn-group">
+              <button class="btn btn-primary" id="timerStartBtn" onclick="toggleTimer()">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>
+                Start Block
+              </button>
+              <button class="btn btn-amber" onclick="markPartial()">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Mark Partial
+              </button>
+              <button class="btn btn-ghost" onclick="takeBreak()">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                Take Break
+              </button>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="notes-area">
+            <div class="notes-label">Quick Notes (optional)</div>
+            <textarea id="execNotes" placeholder="What are you learning, building, or thinking about..."></textarea>
+          </div>
+
+          <!-- Complete task -->
+          <div class="card">
+            <div class="card-title">Task Actions</div>
+            <div class="btn-group">
+              <button class="btn btn-green" onclick="completeCurrentTask()">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Complete Task
+              </button>
+              <button class="btn btn-ghost" onclick="skipTask()">Skip to Next Task</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== REVIEW & GAPS ====== -->
+    <div class="page" id="page-review">
+      <div class="welcome-bar">
+        <div class="welcome-text">
+          <h1>Review & Gaps 🌙</h1>
+          <p>Clean your brain. Identify what's missing. Set tomorrow.</p>
+        </div>
+        <button class="btn btn-primary" onclick="saveReview()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save Review
+        </button>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <!-- Recall -->
+          <div class="review-section">
+            <div class="review-header" style="background: var(--red-soft); border-color: var(--red-mid);">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--red)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              <span style="color: var(--red);">Section 1 — Recall</span>
+            </div>
+            <div class="review-body">
+              <div class="form-group mb-0">
+                <label class="form-label">What did I learn / build today?</label>
+                <textarea class="form-textarea" id="reviewRecall" placeholder="e.g. Learned FastAPI routing, built 3 endpoints, understood request/response flow..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tomorrow -->
+          <div class="review-section">
+            <div class="review-header" style="background: var(--green-bg); border-color: #A8E8CF;">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--green)" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              <span style="color: #1A9E6A;">Section 3 — Continuation</span>
+            </div>
+            <div class="review-body">
+              <div class="form-group mb-0">
+                <label class="form-label">Tomorrow's first task</label>
+                <input class="form-input" id="reviewTomorrow" placeholder="e.g. Continue with FastAPI database integration..." />
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">This will auto-fill in Task Locker tomorrow.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Gaps -->
+          <div class="review-section">
+            <div class="review-header" style="background: var(--amber-bg); border-color: #F6D68A;">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span style="color: #B37A0F;">Section 2 — Gaps</span>
+            </div>
+            <div class="review-body">
+              <div class="form-group">
+                <label class="form-label">What confused me today?</label>
+                <textarea class="form-textarea" id="reviewConfused" placeholder="e.g. Still unclear on async/await flow in FastAPI..."></textarea>
+              </div>
+              <div class="form-group mb-0">
+                <label class="form-label">What did I forget or skip?</label>
+                <textarea class="form-textarea" id="reviewForgot" placeholder="e.g. Forgot to test error handling cases..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Past Reviews -->
+          <div class="card">
+            <div class="card-title">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Recent Reviews
+            </div>
+            <div id="pastReviews">
+              <p style="color: var(--text-muted); font-size: 14px; text-align: center; padding: 16px 0;">No reviews saved yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== INSIGHTS ====== -->
+    <div class="page" id="page-insights">
+      <div class="welcome-bar">
+        <div class="welcome-text">
+          <h1>Insights 📊</h1>
+          <p>Your execution data will appear here after 7 days.</p>
+        </div>
+      </div>
+
+      <div class="grid-3 section-gap">
+        <div class="stat-card">
+          <div class="stat-label">Total Blocks Done</div>
+          <div class="stat-num" id="insightBlocks">0</div>
+          <div class="stat-sub">all time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tasks Completed</div>
+          <div class="stat-num" id="insightTasks">0</div>
+          <div class="stat-sub">all time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Review Sessions</div>
+          <div class="stat-num" id="insightReviews">0</div>
+          <div class="stat-sub">all time</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-title">Weekly Consistency</div>
+        <div style="display: flex; gap: 8px; align-items: flex-end; height: 80px; padding-top: 10px;" id="weeklyChart">
+          <!-- bars populated by JS -->
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 8px;" id="weeklyDays"></div>
+      </div>
+
+      <div class="coming-soon card">
+        <div class="coming-soon-icon">🔮</div>
+        <h2>Advanced insights coming</h2>
+        <p>After 7–10 days of consistent execution, you'll see patterns, weak areas, and time leaks here. Keep building the habit first.</p>
+        <button class="btn btn-outline mt-16" onclick="navigateTo('locker')">Start planning today</button>
+      </div>
+    </div>
+
+    <!-- ====== SETTINGS ====== -->
+    <div class="page" id="page-settings">
+      <div class="welcome-bar">
+        <div class="welcome-text">
+          <h1>Settings ⚙️</h1>
+          <p>Personalize your EOS experience.</p>
+        </div>
+        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Profile</div>
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input class="form-input" id="settingName" placeholder="Fanoy" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" id="settingEmail" type="email" placeholder="your@email.com" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Execution Blocks</div>
+          <div class="form-group">
+            <label class="form-label">Block Duration (minutes)</label>
+            <input class="form-input" id="settingBlockDuration" type="number" value="45" min="10" max="120" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Break Duration (minutes)</label>
+            <input class="form-input" id="settingBreakDuration" type="number" value="10" min="5" max="30" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Tasks Per Day</label>
+            <input class="form-input" id="settingMaxTasks" type="number" value="3" min="1" max="5" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Block Labels</div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Customize your 3 execution block names.</p>
+          <div class="form-group">
+            <label class="form-label">Block 1 Name</label>
+            <input class="form-input" id="block1Name" placeholder="Learn" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Block 2 Name</label>
+            <input class="form-input" id="block2Name" placeholder="Practice" />
+          </div>
+          <div class="form-group mb-0">
+            <label class="form-label">Block 3 Name</label>
+            <input class="form-input" id="block3Name" placeholder="Integrate" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="color: var(--red);">Data Management</div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6;">Clear your task locker or reset all app data. Use with caution.</p>
+          <div class="btn-group">
+            <button class="btn btn-danger" id="clearLockerBtn">Clear Task Locker</button>
+            <button class="btn btn-danger" onclick="resetAll()">Reset All Data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="editModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Edit Task</h3>
+
+    <input id="editName" placeholder="Task name" />
+    <input id="editOutcome" placeholder="Outcome" />
+    <input id="editResource" placeholder="Resource link" />
+
+    <div class="modal-actions">
+      <button type="button" id="saveEditBtn">Save</button>
+      <button type="button" id="cancelEditBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div id="deleteConfirmModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Confirm Delete</h3>
+    <p>Are you sure you want to delete <strong id="deleteTaskName">this task</strong>?</p>
+    <div class="modal-actions">
+      <button type="button" id="confirmDeleteBtn">Yes</button>
+      <button type="button" id="cancelDeleteBtn">No</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
